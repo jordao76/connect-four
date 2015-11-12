@@ -48,8 +48,8 @@ describe 'Connect Four operations', ->
           W, W, W, W, _, _, _
         ]
       ]
-      (isWin x, X).should.be.true for x in ws(X)
-      (isWin o, O).should.be.true for o in ws(O)
+      (isWin x, X).should.be.true for x in ws X
+      (isWin o, O).should.be.true for o in ws O
     it 'should be true for column wins', ->
       ws = (W) -> [
         [
@@ -77,5 +77,26 @@ describe 'Connect Four operations', ->
           _, _, _, _, _, _, W
         ]
       ]
-      (isWin x, X).should.be.true for x in ws(X)
-      (isWin o, O).should.be.true for o in ws(O)
+      (isWin x, X).should.be.true for x in ws X
+      (isWin o, O).should.be.true for o in ws O
+    it 'should be true for left-to-right diagonal wins', ->
+      ws = (W) -> [
+        [
+          W, _, _, _, _, _, _
+          _, W, _, _, _, _, _
+          _, _, W, _, _, _, _
+          _, _, _, W, _, _, _
+          _, _, _, _, _, _, _
+          _, _, _, _, _, _, _
+        ]
+        [
+          _, _, _, _, _, _, _
+          _, _, _, _, _, _, _
+          _, _, _, W, _, _, _
+          _, _, _, _, W, _, _
+          _, _, _, _, _, W, _
+          _, _, _, _, _, _, W
+        ]
+      ]
+      (isWin x, X).should.be.true for x in ws X
+      (isWin o, O).should.be.true for o in ws O
