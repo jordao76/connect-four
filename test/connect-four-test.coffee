@@ -158,3 +158,15 @@ describe 'Connect Four operations', ->
       ]
       (isWin a, X).should.be.false for a in as
       (isWin a, O).should.be.false for a in as
+    it 'should be false for draw', ->
+      a =
+        [
+          O, X, X, O, X, O, X
+          X, O, X, O, X, O, X
+          X, O, X, O, O, X, O
+          X, O, O, X, O, X, O
+          O, X, X, O, X, X, X
+          O, X, O, X, X, O, O
+        ]
+      (isWin a, X).should.be.false
+      (isWin a, O).should.be.false
