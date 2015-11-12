@@ -20,11 +20,14 @@ winnableRows = (a) ->
 winnableColumns = (a) ->
   flatten ([a[i+j*7],a[i+7+j*7],a[i+7*2+j*7],a[i+7*3+j*7]] for i in [0...7] for j in [0...3])
 
-winnableDiagonals = (a) ->
+winnableDiagonalsL = (a) ->
   flatten ([a[i+j*7],a[i+7+1+j*7],a[i+7*2+2+j*7],a[i+7*3+3+j*7]] for i in [0...4] for j in [0...3])
 
+winnableDiagonalsR = (a) ->
+  flatten ([a[i+j*7],a[i+7-1+j*7],a[i+7*2-2+j*7],a[i+7*3-3+j*7]] for i in [3...7] for j in [0...3])
+
 winnableLines = (a) ->
-  [(winnableRows a)..., (winnableColumns a)..., (winnableDiagonals a)...]
+  [(winnableRows a)..., (winnableColumns a)..., (winnableDiagonalsL a)..., (winnableDiagonalsR a)...]
 
 isWin = (a, W) ->
   (winnableLines a).some (r) -> r.every (e) -> e is W

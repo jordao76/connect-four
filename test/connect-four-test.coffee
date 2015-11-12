@@ -100,3 +100,32 @@ describe 'Connect Four operations', ->
       ]
       (isWin x, X).should.be.true for x in ws X
       (isWin o, O).should.be.true for o in ws O
+    it 'should be true for right-to-left diagonal wins', ->
+      ws = (W) -> [
+        [
+          _, _, _, _, _, _, W
+          _, _, _, _, _, W, _
+          _, _, _, _, W, _, _
+          _, _, _, W, _, _, _
+          _, _, _, _, _, _, _
+          _, _, _, _, _, _, _
+        ]
+        [
+          _, _, _, _, _, _, _
+          _, _, _, _, _, _, _
+          _, _, _, W, _, _, _
+          _, _, W, _, _, _, _
+          _, W, _, _, _, _, _
+          W, _, _, _, _, _, _
+        ]
+        [
+          _, _, _, _, _, _, _
+          _, _, _, _, _, W, _
+          _, _, _, _, W, _, _
+          _, _, _, W, _, _, _
+          _, _, W, _, _, _, _
+          _, _, _, _, _, _, _
+        ]
+      ]
+      (isWin x, X).should.be.true for x in ws X
+      (isWin o, O).should.be.true for o in ws O
