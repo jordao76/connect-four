@@ -1,3 +1,5 @@
+# coffeelint: disable=max_line_length
+
 [_, X, O] = [' ', 'X', 'O']
 
 # empty board
@@ -13,10 +15,16 @@ empty = [
 flatten = (a) -> a.reduce (l, r) -> l.concat r
 
 winnableRows = (a) ->
-  flatten (a[i+j+0...i+j+4] for i in [0...4] for j in [0...6*7] by 7)
+  flatten (a[i+j...i+j+4] for i in [0...4] for j in [0...6*7] by 7)
+
+winnableColumns = (a) ->
+  flatten ([a[i+j*7],a[i+7+j*7],a[i+7*2+j*7],a[i+7*3+j*7]] for i in [0...7] for j in [0...3])
+
+winnableLines = (a) ->
+  [(winnableRows a)..., (winnableColumns a)...]
 
 isWin = (a, W) ->
-  (winnableRows a).some (r) -> r.every (e) -> e is W
+  (winnableLines a).some (r) -> r.every (e) -> e is W
 
 module.exports = {
   _, X, O
