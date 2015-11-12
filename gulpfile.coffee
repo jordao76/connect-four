@@ -17,7 +17,12 @@ gulp.task 'lint', ->
     .pipe $.coffeelint.reporter 'failOnWarning'
 
 gulp.task 'test', ['lint'], ->
-  gulp.src ['./test/**/*.coffee']
+  gulp.src ['./test/**/*.coffee', '!./test/**/perf*.coffee']
+    .pipe $.mocha()
+    .on 'error', onError
+
+gulp.task 'perf', ->
+  gulp.src ['./test/**/perf*.coffee']
     .pipe $.mocha()
     .on 'error', onError
 
@@ -32,6 +37,6 @@ gulp.task 'clean',
     .bind null, ['lib']
 
 gulp.task 'build', (done) ->
-  run 'clean', 'test', 'compile', done
+  run 'clean', 'test', 'perf', 'compile', done
 
 gulp.task 'default', ['build']
