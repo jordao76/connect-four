@@ -4,8 +4,17 @@
 {
   _, X, O
   empty,
-  isWin
+  isWin, isFull
 } = require '../src/connect-four'
+
+draw = [
+  O, X, X, O, X, O, X
+  X, O, X, O, X, O, X
+  X, O, X, O, O, X, O
+  X, O, O, X, O, X, O
+  O, X, X, O, X, X, X
+  O, X, O, X, X, O, O
+]
 
 describe 'Connect Four operations', ->
 
@@ -159,14 +168,21 @@ describe 'Connect Four operations', ->
       (isWin a, X).should.be.false for a in as
       (isWin a, O).should.be.false for a in as
     it 'should be false for draw', ->
-      a =
-        [
-          O, X, X, O, X, O, X
-          X, O, X, O, X, O, X
-          X, O, X, O, O, X, O
-          X, O, O, X, O, X, O
-          O, X, X, O, X, X, X
-          O, X, O, X, X, O, O
-        ]
-      (isWin a, X).should.be.false
-      (isWin a, O).should.be.false
+      (isWin draw, X).should.be.false
+      (isWin draw, O).should.be.false
+
+  describe 'isFull', ->
+    it 'should be false for an empty board', ->
+      (isFull empty).should.be.false
+    it 'should be true for draw', ->
+      (isFull draw).should.be.true
+    it 'should be false for game-in-progress', ->
+      game = [
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, O, _, _, _
+        _, _, _, X, _, _, _
+        _, _, _, O, X, _, _
+        _, _, O, X, X, O, _
+      ]
+      (isFull game).should.be.false

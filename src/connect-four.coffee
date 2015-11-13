@@ -32,8 +32,11 @@ winnableLines = (a) ->
 isWin = (a, W) ->
   (winnableLines a).some (r) -> r.every (e) -> e is W
 
+isFull = (a) ->
+  not a.some (e) -> e is _
+
 module.exports = {
   _, X, O
   empty
-  isWin
+  isWin, isFull
 }
