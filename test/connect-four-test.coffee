@@ -5,7 +5,7 @@
   _, X, O
   empty,
   isWin, isFull, isTerminal
-  openColumns, evaluate
+  openColumns, play, evaluate
 } = require '../src/connect-four'
 
 draw = [
@@ -239,3 +239,44 @@ describe 'Connect Four operations', ->
     it 'should correctly evaluate a game in progress', ->
       (evaluate game).should.be.below (evaluate xWins)
       (evaluate game).should.be.above (evaluate oWins)
+
+  describe 'play', ->
+    it 'should play at the right positions', ->
+      (play empty, 0, X).should.deep.equal [
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        X, _, _, _, _, _, _
+      ]
+      (play [
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, X, _, _, _
+        _, _, O, X, O, _, _
+      ], 3, X).should.deep.equal [
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, _, _, _, _
+        _, _, _, X, _, _, _
+        _, _, _, X, _, _, _
+        _, _, O, X, O, _, _
+      ]
+      (play [
+        _, _, _, _, _, _, _
+        _, _, _, O, _, _, _
+        _, _, _, X, _, _, _
+        _, _, _, O, _, _, _
+        _, _, _, X, _, _, _
+        _, _, O, X, O, _, _
+      ], 3, O).should.deep.equal [
+        _, _, _, O, _, _, _
+        _, _, _, O, _, _, _
+        _, _, _, X, _, _, _
+        _, _, _, O, _, _, _
+        _, _, _, X, _, _, _
+        _, _, O, X, O, _, _
+      ]

@@ -1,4 +1,5 @@
 # coffeelint: disable=max_line_length
+{MAX, MIN} = require 'aye-aye'
 
 [_, X, O] = [' ', 'X', 'O']
 
@@ -41,6 +42,12 @@ isTerminal = (a) ->
 openColumns = (a) ->
   i for e, i in a[0...7] when e is _
 
+play = (a, columnIndex, W) ->
+  for rowIndex in [5..0]
+    index = rowIndex*7+columnIndex
+    break if a[index] is _
+  [a[0...index]..., W, a[index+1..]...]
+
 evaluate = (a) ->
   score = 0
   for l in winnableLines a
@@ -55,5 +62,5 @@ module.exports = {
   _, X, O
   empty
   isWin, isFull, isTerminal
-  openColumns, evaluate
+  openColumns, play, evaluate
 }
