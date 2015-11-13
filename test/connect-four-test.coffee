@@ -5,6 +5,7 @@
   _, X, O
   empty,
   isWin, isFull, isTerminal
+  openColumns
 } = require '../src/connect-four'
 
 draw = [
@@ -209,3 +210,19 @@ describe 'Connect Four operations', ->
     it 'should be true for wins', ->
       (isTerminal xWins).should.be.true
       (isTerminal oWins).should.be.true
+
+  describe 'openColumns', ->
+    it 'all should be open for an empty board', ->
+      (openColumns empty).should.deep.equal [0...7]
+    it 'none should be open for draw', ->
+      (openColumns draw).should.deep.equal []
+    it 'available columns should be open', ->
+      game = [
+        O, _, _, O, _, _, _
+        O, _, _, X, _, _, _
+        O, _, _, O, _, _, _
+        X, _, _, X, _, _, _
+        X, _, _, O, X, _, _
+        X, _, O, X, X, O, _
+      ]
+      (openColumns game).should.deep.equal [1, 2, 4, 5, 6]

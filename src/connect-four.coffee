@@ -38,8 +38,12 @@ isFull = (a) ->
 isTerminal = (a) ->
   (isFull a) or (isWin a, X) or (isWin a, O)
 
+openColumns = (a) ->
+  i for e, i in a[0...7] when e is _
+
 module.exports = {
   _, X, O
   empty
   isWin, isFull, isTerminal
+  openColumns
 }
