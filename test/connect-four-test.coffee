@@ -5,7 +5,7 @@
   _, X, O
   empty,
   isWin, isFull, isTerminal
-  openColumns
+  openColumns, evaluate
 } = require '../src/connect-four'
 
 draw = [
@@ -226,3 +226,16 @@ describe 'Connect Four operations', ->
         X, _, O, X, X, O, _
       ]
       (openColumns game).should.deep.equal [1, 2, 4, 5, 6]
+
+  describe 'evaluate', ->
+    it 'should be zero for an empty board', ->
+      (evaluate empty).should.equal 0
+    it 'should be positive for an X win', ->
+      (evaluate xWins).should.be.above 0
+    it 'should be negative for an O win', ->
+      (evaluate oWins).should.be.below 0
+    it 'should be zero for a draw', ->
+      (evaluate draw).should.equal 0
+    it 'should correctly evaluate a game in progress', ->
+      (evaluate game).should.be.below (evaluate xWins)
+      (evaluate game).should.be.above (evaluate oWins)

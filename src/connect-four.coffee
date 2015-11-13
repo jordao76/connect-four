@@ -41,9 +41,19 @@ isTerminal = (a) ->
 openColumns = (a) ->
   i for e, i in a[0...7] when e is _
 
+evaluate = (a) ->
+  score = 0
+  for l in winnableLines a
+    [x, o] = [0, 0]
+    for w in l
+      ++x if w is X
+      ++o if w is O
+    score += 10**x - 10**o if x is 0 or o is 0
+  score
+
 module.exports = {
   _, X, O
   empty
   isWin, isFull, isTerminal
-  openColumns
+  openColumns, evaluate
 }
