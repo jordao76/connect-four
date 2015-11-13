@@ -58,9 +58,21 @@ evaluate = (a) ->
     score += 10**x - 10**o if x is 0 or o is 0
   score
 
+class ConnectFour
+  constructor: (@a = empty, @nextPlayer = X, @depth = 0) ->
+  isWin: (W) -> isWin @a, W
+  isTerminal: -> isTerminal @a
+  nextAgent: -> if @nextPlayer is X then MAX else MIN
+  utility: -> evaluate @a
+  possibleActions: -> openColumns @a
+  play: (columnIndex) ->
+    new @constructor (play @a, columnIndex, @nextPlayer), @opponent(), @depth + 1
+  opponent: -> if @nextPlayer is X then O else X
+
 module.exports = {
   _, X, O
   empty
   isWin, isFull, isTerminal
   openColumns, play, evaluate
+  ConnectFour
 }
