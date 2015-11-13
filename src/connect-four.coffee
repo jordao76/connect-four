@@ -35,8 +35,11 @@ isWin = (a, W) ->
 isFull = (a) ->
   not a.some (e) -> e is _
 
+isTerminal = (a) ->
+  (isFull a) or (isWin a, X) or (isWin a, O)
+
 module.exports = {
   _, X, O
   empty
-  isWin, isFull
+  isWin, isFull, isTerminal
 }

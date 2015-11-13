@@ -4,7 +4,7 @@
 {
   _, X, O
   empty,
-  isWin, isFull
+  isWin, isFull, isTerminal
 } = require '../src/connect-four'
 
 draw = [
@@ -14,6 +14,30 @@ draw = [
   X, O, O, X, O, X, O
   O, X, X, O, X, X, X
   O, X, O, X, X, O, O
+]
+game = [
+  _, _, _, _, _, _, _
+  _, _, _, _, _, _, _
+  _, _, _, O, _, _, _
+  _, _, _, X, _, _, _
+  _, _, _, O, X, _, _
+  _, _, O, X, X, O, _
+]
+xWins = [
+  X, X, X, X, _, _, _
+  _, _, _, _, _, _, _
+  _, _, _, _, _, _, _
+  _, _, _, _, _, _, _
+  _, _, _, _, _, _, _
+  _, _, _, _, _, _, _
+]
+oWins = [
+  _, _, _, _, _, _, _
+  _, _, _, _, _, _, _
+  _, _, _, O, _, _, _
+  _, _, _, _, O, _, _
+  _, _, _, _, _, O, _
+  _, _, _, _, _, _, O
 ]
 
 describe 'Connect Four operations', ->
@@ -140,14 +164,7 @@ describe 'Connect Four operations', ->
       (isWin o, O).should.be.true for o in ws O
     it 'should be false for game-in-progress', ->
       as = [
-        [
-          _, _, _, _, _, _, _
-          _, _, _, _, _, _, _
-          _, _, _, O, _, _, _
-          _, _, _, X, _, _, _
-          _, _, _, O, X, _, _
-          _, _, O, X, X, O, _
-        ]
+        game,
         [
           _, _, _, _, _, _, _
           _, _, _, _, _, _, _
@@ -177,12 +194,18 @@ describe 'Connect Four operations', ->
     it 'should be true for draw', ->
       (isFull draw).should.be.true
     it 'should be false for game-in-progress', ->
-      game = [
-        _, _, _, _, _, _, _
-        _, _, _, _, _, _, _
-        _, _, _, O, _, _, _
-        _, _, _, X, _, _, _
-        _, _, _, O, X, _, _
-        _, _, O, X, X, O, _
-      ]
       (isFull game).should.be.false
+    it 'should be false for wins', ->
+      (isFull xWins).should.be.false
+      (isFull oWins).should.be.false
+
+  describe 'isTerminal', ->
+    it 'should be false for an empty board', ->
+      (isTerminal empty).should.be.false
+    it 'should be true for draw', ->
+      (isTerminal draw).should.be.true
+    it 'should be false for game-in-progress', ->
+      (isTerminal game).should.be.false
+    it 'should be true for wins', ->
+      (isTerminal xWins).should.be.true
+      (isTerminal oWins).should.be.true
