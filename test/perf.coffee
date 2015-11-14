@@ -5,7 +5,8 @@ Benchmark = require 'benchmark'
 {
   _, X, O
   empty,
-  isWin
+  isWin,
+  ConnectFour
 } = require '../src/connect-four'
 
 run = (s, f) ->
@@ -45,3 +46,11 @@ describe 'Connect Four benchmarks', ->
       O, X, O, X, X, O, O
     ]
     run 'isWin (X wins on the last diagonal)', -> isWin xWinsLastDiagonal, X
+
+  describe 'minimax state', ->
+
+    {MinimaxAgent} = require 'aye-aye'
+    agent = new MinimaxAgent 2
+    playTurn = (state) -> state.play agent.nextAction state
+
+    run 'minimax depth 2 play turn from initial conditions', -> playTurn new ConnectFour

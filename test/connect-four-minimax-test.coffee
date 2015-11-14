@@ -15,7 +15,7 @@ play = (state) ->
     state = playTurn state
   state
 
-describe "minimax strategy - Connect Four", ->
+describe "Connect Four minimax state", ->
 
   it 'X should win given the right conditions', ->
     state = new ConnectFour [
