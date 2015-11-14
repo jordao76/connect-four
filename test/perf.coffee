@@ -11,7 +11,7 @@ Benchmark = require 'benchmark'
 
 run = (s, f) ->
   new Benchmark.Suite()
-    .add s, -> f()
+    .add s, f
     .on 'cycle', (e) -> it e.target, ->
     .run async: false
 
@@ -57,7 +57,9 @@ describe 'Connect Four benchmarks', ->
 
     state = new ConnectFour
     state = playTurn state for i in [0...10]
+    state.isTerminal().should.be.false
     run 'minimax depth 2 play turn after 10 turns', -> playTurn state
 
     state = playTurn state for i in [0...10]
+    state.isTerminal().should.be.false
     run 'minimax depth 2 play turn after 20 turns', -> playTurn state
