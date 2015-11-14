@@ -54,3 +54,10 @@ describe 'Connect Four benchmarks', ->
     playTurn = (state) -> state.play agent.nextAction state
 
     run 'minimax depth 2 play turn from initial conditions', -> playTurn new ConnectFour
+
+    state = new ConnectFour
+    state = playTurn state for i in [0...10]
+    run 'minimax depth 2 play turn after 10 turns', -> playTurn state
+
+    state = playTurn state for i in [0...10]
+    run 'minimax depth 2 play turn after 20 turns', -> playTurn state
