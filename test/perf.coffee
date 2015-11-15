@@ -7,7 +7,7 @@ Benchmark = require 'benchmark'
   empty,
   isWin,
   ConnectFour
-} = require '../src/connect-four'
+} = require '../app/src/connect-four'
 
 run = (s, f) ->
   new Benchmark.Suite()

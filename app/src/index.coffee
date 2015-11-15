@@ -1,0 +1,1 @@
+{ConnectFour} = require './connect-four'

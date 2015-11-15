@@ -2,7 +2,7 @@
 
 (require 'chai').should()
 {MinimaxAgent} = require 'aye-aye'
-{_, X, O, ConnectFour} = require '../src/connect-four'
+{_, X, O, ConnectFour} = require '../app/src/connect-four'
 
 minimax = new MinimaxAgent 2
 

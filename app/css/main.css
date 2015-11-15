@@ -1,0 +1,50 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+header {
+  text-align: center;
+  height: 10rem;
+  padding-top: 10px;
+}
+#connect-four {
+  cursor: default;
+  margin: 0 auto;
+  width: 539px;
+}
+.tile {
+  height: 77px;
+  width: 77px;
+  font-size: 5.5rem;
+  text-align: center;
+}
+.c4-row:nth-child(1) {
+  box-shadow: -1px -1px black;
+}
+.c4-row {
+  box-shadow: -1px 0px black;
+}
+.tile {
+  box-shadow: 1px 1px black;
+}
+#players {
+  padding-top: 10px;
+  text-align: center;
+  font-size: 2rem;
+}
+#commands {
+  padding-top: 10px;
+  text-align: right;
+}
+#spinner {
+  height: 60px;
+}
+#credit {
+  text-align: right;
+}
+#end-text {
+  text-align: center;
+}
+#modal {
+  color: #31708f;
+  background-color: #d9edf7;
+}

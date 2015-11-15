@@ -6,7 +6,7 @@
   empty,
   isWin, isFull, isTerminal
   openColumns, play, evaluate
-} = require '../src/connect-four'
+} = require '../app/src/connect-four'
 
 draw = [
   O, X, X, O, X, O, X
