@@ -5,7 +5,7 @@
   _, X, O
   empty,
   isWin, isFull, isTerminal
-  openColumns, play, evaluate
+  freePositions, openColumns, play, evaluate
 } = require '../app/src/connect-four'
 
 draw = [
@@ -226,6 +226,31 @@ describe 'Connect Four operations', ->
         X, _, O, X, X, O, _
       ]
       (openColumns game).should.deep.equal [1, 2, 4, 5, 6]
+
+  describe 'freePositions', ->
+    cmp = (a,b) -> a-b
+
+    it 'all should be free for an empty board', ->
+      (freePositions empty).sort(cmp).should.deep.equal [0...42]
+    it 'none should be open for draw', ->
+      (freePositions draw).should.deep.equal []
+    it 'free positions for game-in-progress', ->
+      game = [
+        O, _, _, O, _, _, _  # 1, 2, 4, 5, 6
+        O, X, _, X, _, _, _  # 9, 11, 12, 13
+        O, X, _, O, X, X, _  # 16, 20
+        X, O, _, X, O, O, _  # 23, 27
+        X, O, _, O, X, X, _  # 30, 34
+        X, O, O, X, X, O, _  # 41
+      ]
+      (freePositions game).sort(cmp).should.deep.equal [
+        1, 2, 4, 5, 6
+        9, 11, 12, 13
+        16, 20
+        23, 27
+        30, 34
+        41
+      ]
 
   describe 'evaluate', ->
     it 'should be zero for an empty board', ->
