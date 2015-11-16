@@ -72,7 +72,7 @@ class ConnectFour
   isTerminal: -> isTerminal @a
   nextAgent: -> if @nextPlayer is X then MAX else MIN
   utility: -> evaluate @a
-  openPositions: -> openPositions @a
+  freePositions: -> freePositions @a
   possibleActions: -> openColumns @a
   play: (columnIndex) ->
     new @constructor (play @a, columnIndex, @nextPlayer), @opponent(), @depth + 1
