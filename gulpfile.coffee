@@ -39,6 +39,7 @@ gulp.task 'scripts', ['test'], ->
       .pipe gulp.dest 'dist/src'
 
   transform 'index.coffee', 'main.min.js'
+  transform 'minimax-worker.coffee', 'minimax-worker.min.js'
 
 gulp.task 'jade', ->
   gulp.src 'app/*.jade'

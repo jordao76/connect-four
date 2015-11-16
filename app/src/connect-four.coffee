@@ -45,10 +45,13 @@ openColumns = (a) ->
 freePositions = (a) ->
   i for e, i in a[0...42] when e is _
 
-play = (a, columnIndex, W) ->
+openPosition = (a, columnIndex) ->
   for rowIndex in [5..0]
     index = rowIndex*7+columnIndex
-    break if a[index] is _
+    return index if a[index] is _
+
+play = (a, columnIndex, W) ->
+  index = openPosition a, columnIndex
   [a[0...index]..., W, a[index+1..]...]
 
 evaluate = (a) ->
@@ -68,6 +71,7 @@ class ConnectFour
   nextAgent: -> if @nextPlayer is X then MAX else MIN
   utility: -> evaluate @a
   freePositions: -> freePositions @a
+  openPosition: (columnIndex) -> openPosition @a, columnIndex
   possibleActions: -> openColumns @a
   play: (columnIndex) ->
     new @constructor (play @a, columnIndex, @nextPlayer), @opponent(), @depth + 1
@@ -77,6 +81,6 @@ module.exports = {
   _, X, O
   empty
   isWin, isFull, isTerminal
-  freePositions, openColumns, play, evaluate
+  freePositions, openColumns, openPosition, play, evaluate
   ConnectFour
 }
