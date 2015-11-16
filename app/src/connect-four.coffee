@@ -43,12 +43,7 @@ openColumns = (a) ->
   i for e, i in a[0...7] when e is _
 
 freePositions = (a) ->
-  res = []
-  for columnIndex in openColumns a
-    for rowIndex in [5..0]
-      index = rowIndex*7+columnIndex
-      res.push index if a[index] is _
-  res
+  i for e, i in a[0...42] when e is _
 
 play = (a, columnIndex, W) ->
   for rowIndex in [5..0]
