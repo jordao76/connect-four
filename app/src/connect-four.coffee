@@ -18,7 +18,8 @@ winnableLines = (a) ->
   for i in [0...4]
     # rows
     for j in [0...6*7] by 7
-      res.push a[i+j...i+j+4]
+      k=i+j
+      res.push [a[k],a[k+1],a[k+2],a[k+3]]
     # left diagonals
     for j in [0...3]
       res.push [a[i+j*7],a[i+7+1+j*7],a[i+7*2+2+j*7],a[i+7*3+3+j*7]]
