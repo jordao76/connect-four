@@ -50,16 +50,16 @@ describe 'Connect Four benchmarks', ->
   describe 'minimax state', ->
 
     {MinimaxAgent} = require 'aye-aye'
-    agent = new MinimaxAgent 2
+    agent = new MinimaxAgent 3
     playTurn = (state) -> state.play agent.nextAction state
 
-    run 'minimax depth 2 play turn from initial conditions', -> playTurn new ConnectFour
+    run 'minimax depth 3 play turn from initial conditions', -> playTurn new ConnectFour
 
     state = new ConnectFour
     state = playTurn state for i in [0...10]
     state.isTerminal().should.be.false
-    run 'minimax depth 2 play turn after 10 turns', -> playTurn state
+    run 'minimax depth 3 play turn after 10 turns', -> playTurn state
 
     state = playTurn state for i in [0...10]
     state.isTerminal().should.be.false
-    run 'minimax depth 2 play turn after 20 turns', -> playTurn state
+    run 'minimax depth 3 play turn after 20 turns', -> playTurn state

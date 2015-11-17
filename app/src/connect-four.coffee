@@ -13,31 +13,36 @@ empty = [
   _, _, _, _, _, _, _
 ]
 
-flatten = (a) -> a.reduce (l, r) -> l.concat r
-
-winnableRows = (a) ->
-  flatten (a[i+j...i+j+4] for i in [0...4] for j in [0...6*7] by 7)
-
-winnableColumns = (a) ->
-  flatten ([a[i+j*7],a[i+7+j*7],a[i+7*2+j*7],a[i+7*3+j*7]] for i in [0...7] for j in [0...3])
-
-winnableDiagonalsL = (a) ->
-  flatten ([a[i+j*7],a[i+7+1+j*7],a[i+7*2+2+j*7],a[i+7*3+3+j*7]] for i in [0...4] for j in [0...3])
-
-winnableDiagonalsR = (a) ->
-  flatten ([a[i+j*7],a[i+7-1+j*7],a[i+7*2-2+j*7],a[i+7*3-3+j*7]] for i in [3...7] for j in [0...3])
-
 winnableLines = (a) ->
-  [(winnableRows a)..., (winnableColumns a)..., (winnableDiagonalsL a)..., (winnableDiagonalsR a)...]
+  res = []
+  for i in [0...4]
+    # rows
+    for j in [0...6*7] by 7
+      res.push a[i+j...i+j+4]
+    # left diagonals
+    for j in [0...3]
+      res.push [a[i+j*7],a[i+7+1+j*7],a[i+7*2+2+j*7],a[i+7*3+3+j*7]]
+  for j in [0...3]
+    # columns
+    for i in [0...7]
+      res.push [a[i+j*7],a[i+7+j*7],a[i+7*2+j*7],a[i+7*3+j*7]]
+    # right diagonals
+    for i in [3...7]
+      res.push [a[i+j*7],a[i+7-1+j*7],a[i+7*2-2+j*7],a[i+7*3-3+j*7]]
+  res
 
 isWin = (a, W) ->
-  (winnableLines a).some (r) -> r.every (e) -> e is W
+  for [a,b,c,d] in winnableLines a
+    return yes if a is W and b is W and c is W and d is W
+  no
 
 isFull = (a) ->
-  not a.some (e) -> e is _
+  for e in a
+    return no if e is _
+  yes
 
 isTerminal = (a) ->
-  (isFull a) or (isWin a, X) or (isWin a, O)
+  (isWin a, X) or (isWin a, O) or (isFull a)
 
 openColumns = (a) ->
   i for e, i in a[0...7] when e is _
@@ -52,7 +57,9 @@ openPosition = (a, columnIndex) ->
 
 play = (a, columnIndex, W) ->
   index = openPosition a, columnIndex
-  [a[0...index]..., W, a[index+1..]...]
+  b = a.slice()
+  b[index] = W
+  b
 
 evaluate = (a) ->
   score = 0
