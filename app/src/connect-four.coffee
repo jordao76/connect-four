@@ -13,28 +13,33 @@ empty = [
   _, _, _, _, _, _, _
 ]
 
-winnableLines = (a) ->
+# array with all 4-tuple indices of board positions
+# where a player can win the game
+winnableIndices = do ->
   res = []
   for i in [0...4]
     # rows
-    for j in [0...6*7] by 7
-      k=i+j
-      res.push [a[k],a[k+1],a[k+2],a[k+3]]
+    for j in [0...6]
+      k=i+j*7
+      res.push [k,k+1,k+2,k+3]
     # left diagonals
     for j in [0...3]
-      res.push [a[i+j*7],a[i+7+1+j*7],a[i+7*2+2+j*7],a[i+7*3+3+j*7]]
+      k=i+j*7
+      res.push [k,k+7+1,k+7*2+2,k+7*3+3]
   for j in [0...3]
     # columns
     for i in [0...7]
-      res.push [a[i+j*7],a[i+7+j*7],a[i+7*2+j*7],a[i+7*3+j*7]]
+      k=i+j*7
+      res.push [k,k+7,k+7*2,k+7*3]
     # right diagonals
     for i in [3...7]
-      res.push [a[i+j*7],a[i+7-1+j*7],a[i+7*2-2+j*7],a[i+7*3-3+j*7]]
+      k=i+j*7
+      res.push [k,k+7-1,k+7*2-2,k+7*3-3]
   res
 
 isWin = (a, W) ->
-  for [a,b,c,d] in winnableLines a
-    return yes if a is W and b is W and c is W and d is W
+  for [i1,i2,i3,i4] in winnableIndices
+    return yes if a[i1] is W and a[i2] is W and a[i3] is W and a[i4] is W
   no
 
 isFull = (a) ->
@@ -46,36 +51,44 @@ isTerminal = (a) ->
   (isWin a, X) or (isWin a, O) or (isFull a)
 
 openColumns = (a) ->
-  i for e, i in a[0...7] when e is _
+  i for i in [0...7] when a[i] is _
 
 freePositions = (a) ->
-  i for e, i in a[0...42] when e is _
+  i for i in [0...42] when a[i] is _
 
 openPosition = (a, columnIndex) ->
   for rowIndex in [5..0]
     index = rowIndex*7+columnIndex
     return index if a[index] is _
 
+# this is a bit faster than using Array::slice
+copy = (a) ->
+  i = 42
+  b = new Array i
+  b[i] = a[i] while i--
+  b
+
 play = (a, columnIndex, W) ->
   index = openPosition a, columnIndex
-  b = a.slice()
+  b = copy a
   b[index] = W
   b
 
+scores = [1,10,100,1000,10000]
 evaluate = (a) ->
   score = 0
-  for l in winnableLines a
+  for indices in winnableIndices
     [x, o] = [0, 0]
-    for w in l
-      ++x if w is X
-      ++o if w is O
-    score += 10**x - 10**o if x is 0 or o is 0
+    for i in indices
+      ++x if a[i] is X
+      ++o if a[i] is O
+    score += scores[x] - scores[o] if x is 0 or o is 0
   score
 
 class ConnectFour
   constructor: (@a = empty, @nextPlayer = X, @depth = 0) ->
   isWin: (W) -> isWin @a, W
-  isTerminal: -> isTerminal @a
+  isTerminal: -> @depth >= 7 and isTerminal @a
   nextAgent: -> if @nextPlayer is X then MAX else MIN
   utility: -> evaluate @a
   freePositions: -> freePositions @a

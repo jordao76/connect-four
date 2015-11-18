@@ -75,7 +75,7 @@ $ ->
 
   players =
     human: -> humanPlayer()
-    computer: -> computerPlayer 3
+    computer: -> computerPlayer 4
 
   createPlayerX = ->
     playerName = ($ '#btn-player-x').text()
