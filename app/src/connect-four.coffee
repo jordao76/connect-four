@@ -35,20 +35,31 @@ winnableIndices = do ->
     for i in [3...7]
       k=i+j*7
       res.push [k,k+7-1,k+7*2-2,k+7*3-3]
-  res
+  # sort based on bottom-up board position
+  res.sort (x, y) -> (Math.min y...) - (Math.min x...)
 
-isWin = (a, W) ->
+winner = (a) ->
   for [i1,i2,i3,i4] in winnableIndices
-    return yes if a[i1] is W and a[i2] is W and a[i3] is W and a[i4] is W
-  no
+    return a[i1] if a[i1] isnt _ and a[i1] is a[i2] is a[i3] is a[i4]
+  null
+
+isWin = (a, W) -> (winner a) is W
+
+wonIndices = (a, [i1,i2,i3,i4]) ->
+  a[i1] isnt _ and a[i1] is a[i2] is a[i3] is a[i4]
+
+winOn = (a) ->
+  for indices in winnableIndices
+    return indices if wonIndices a, indices
+  []
 
 isFull = (a) ->
-  for e in a
-    return no if e is _
+  for i in [0...7]
+    return no if a[i] is _
   yes
 
 isTerminal = (a) ->
-  (isWin a, X) or (isWin a, O) or (isFull a)
+  (isFull a) or !!(winner a)
 
 openColumns = (a) ->
   i for i in [0...7] when a[i] is _
@@ -88,6 +99,8 @@ evaluate = (a) ->
 class ConnectFour
   constructor: (@a = empty, @nextPlayer = X, @depth = 0) ->
   isWin: (W) -> isWin @a, W
+  winOn: -> winOn @a
+  winner: -> winner @a
   isTerminal: -> @depth >= 7 and isTerminal @a
   nextAgent: -> if @nextPlayer is X then MAX else MIN
   utility: -> evaluate @a
@@ -101,7 +114,7 @@ class ConnectFour
 module.exports = {
   _, X, O
   empty
-  isWin, isFull, isTerminal
+  winner, isWin, winOn, isFull, isTerminal
   freePositions, openColumns, openPosition, play, evaluate
   ConnectFour
 }

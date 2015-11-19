@@ -28,10 +28,9 @@ $ ->
       .off 'click'
 
   markWin = ->
-    #TODO
-    #for i in game.winOn()
-    #  wonClass = if game.isWin X then 'x-won-tile' else 'o-won-tile'
-    #  ($ "##{i}").addClass wonClass
+    for i in game.winOn()
+      wonClass = if game.isWin X then 'x-won-tile' else 'o-won-tile'
+      ($ "##{i}").addClass wonClass
 
   checkGameOver = ->
     return no unless game.isTerminal()
