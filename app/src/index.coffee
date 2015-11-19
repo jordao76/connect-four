@@ -44,14 +44,13 @@ $ ->
       .modal('show')
     yes
 
-  playerText = -> game.nextPlayer.toLowerCase()
-
   playAction = (action) ->
     columnIndex = action % 7
     hideSpinner()
     index = game.openPosition columnIndex
+    playerText = game.nextPlayer.toLowerCase()
     $ "##{index}"
-      .text playerText()
+      .addClass playerText + '-tile'
       .highlight()
     game = game.play action
     lastAction = action
@@ -143,9 +142,10 @@ $ ->
       .removeClass 'x-won-board'
       .removeClass 'o-won-board'
     $ '.tile'
+      .removeClass 'x-tile'
+      .removeClass 'o-tile'
       .removeClass 'x-won-tile'
       .removeClass 'o-won-tile'
-      .text ''
 
   newGame = ->
     swapPlayers()

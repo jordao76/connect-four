@@ -26,20 +26,20 @@ header {
 .tile {
   box-shadow: 1px 1px black;
 }
-.x-playable-tile {
-  background-color: rgba(150, 250, 150, 0.5);
-}
-.o-playable-tile {
-  background-color: rgba(250, 150, 150, 0.5);
-}
 .human-playable-tile:hover {
   background-color: rgba(200, 200, 0, 0.5);
 }
+.x-tile {
+  background-color: rgba(0, 250, 0, 0.5);
+}
+.o-tile {
+  background-color: rgba(250, 0, 0, 0.5);
+}
 .x-won-tile {
-  background-color: rgba(0, 200, 0, 0.5);
+  background-color: rgba(0, 100, 0, 0.9);
 }
 .o-won-tile {
-  background-color: rgba(200, 0, 0, 0.5);
+  background-color: rgba(100, 0, 0, 0.9);
 }
 #players {
   padding-top: 10px;
