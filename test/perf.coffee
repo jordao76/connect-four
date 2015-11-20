@@ -24,13 +24,10 @@ describe 'Connect Four benchmarks', ->
     agent = new MinimaxAgent 3
     playTurn = (state) -> state.play agent.nextAction state
 
-    run 'minimax depth 3 play turn from initial conditions', -> playTurn new ConnectFour
-
     state = new ConnectFour
-    state = playTurn state for i in [0...10]
-    state.isTerminal().should.be.false
-    run 'minimax depth 3 play turn after 10 turns', -> playTurn state
-
-    state = playTurn state for i in [0...10]
-    state.isTerminal().should.be.false
-    run 'minimax depth 3 play turn after 20 turns', -> playTurn state
+    [turn, step] = [0, 10]
+    until state.isTerminal()
+      run "minimax depth #{agent.depth} play turn after #{turn} turns", -> playTurn state
+      for i in [0...step]
+        turn++
+        state = playTurn state unless state.isTerminal()
