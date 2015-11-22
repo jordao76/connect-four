@@ -7,6 +7,8 @@
 
 [Connect Four](https://en.wikipedia.org/wiki/Connect_Four) implementation using [aye-aye](https://github.com/jordao76/aye-aye).
 
+Click [here](http://jordao76.github.io/connect-four/) to play.
+
 ## License
 
 Licensed under the [MIT license](https://github.com/jordao76/connect-four/blob/master/LICENSE.txt).

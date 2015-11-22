@@ -1,5 +1,6 @@
 dist
 .tmp
+.publish
 node_modules
 bower_components
 .DS_Store
