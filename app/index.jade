@@ -25,7 +25,8 @@ html(lang='en')
       each row in [0,1,2,3,4,5]
         .c4-row.row
           each column in [0,1,2,3,4,5,6]
-            .tile.col-xs-4(id = "#{row*7 + column}")
+            .tile-pane.col-xs-4
+              .tile(id = "#{row*7 + column}")
 
       .row
         #spinner.col-xs-3

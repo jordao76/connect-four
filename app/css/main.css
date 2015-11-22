@@ -9,37 +9,45 @@ header {
 #connect-four {
   cursor: default;
   margin: 0 auto;
-  width: 539px;
+  width: 595px;
+}
+.c4-row {
+}
+.tile-pane {
+  background-color: #3366ff;
+  height: 85px;
+  width: 85px;
+  padding: 0;
 }
 .tile {
-  height: 77px;
-  width: 77px;
-  font-size: 5.5rem;
-  text-align: center;
+  margin: 0 auto;
+  margin-top: 7px;
+  height: 68px;
+  width: 68px;
   border-radius: 50%;
-  box-shadow: 1px 1px black;
+  box-shadow: 2px 2px black;
+  background-color: #444444;
 }
 .highlighted-tile {
   position: absolute;
-  background-color: #ffff00;
   border-radius: 50%;
   opacity: .7;
   z-index: 10;
 }
 .human-playable-tile:hover {
-  background-color: rgba(200, 200, 0, 0.5);
+  background-color: #c8c800
 }
 .x-tile {
-  background-color: rgba(0, 250, 0, 0.5);
+  background-color: #00fa00
 }
 .o-tile {
-  background-color: rgba(250, 0, 0, 0.5);
+  background-color: #fa0000
 }
 .x-won-tile {
-  background-color: rgba(0, 100, 0, 0.9);
+  background-color: #009900
 }
 .o-won-tile {
-  background-color: rgba(100, 0, 0, 0.9);
+  background-color: #990000
 }
 #players {
   padding-top: 10px;

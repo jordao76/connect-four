@@ -5,7 +5,6 @@ $ = jQuery
 {X, O, ConnectFour} = require './connect-four'
 
 {showSpinner, hideSpinner} = require './spinner'
-require './highlight'
 
 $ ->
 
@@ -35,8 +34,8 @@ $ ->
   checkGameOver = ->
     return no unless game.isTerminal()
     endText = switch
-      when game.isWin X then 'X Wins!'
-      when game.isWin O then 'O Wins!'
+      when game.isWin X then 'Green Wins!'
+      when game.isWin O then 'Red Wins!'
       else 'Draw!'
     $ '#end-text'
       .text endText
@@ -49,9 +48,7 @@ $ ->
     hideSpinner()
     index = game.openPosition columnIndex
     playerText = game.nextPlayer.toLowerCase()
-    $ "##{index}"
-      .addClass playerText + '-tile'
-      .highlight()
+    ($ "##{index}").addClass playerText + '-tile'
     game = game.play action
     lastAction = action
     next()
@@ -138,9 +135,6 @@ $ ->
     playerX?.teardown?()
     playerO?.teardown?()
     hideSpinner()
-    $ '.tic-tac-toe'
-      .removeClass 'x-won-board'
-      .removeClass 'o-won-board'
     $ '.tile'
       .removeClass 'x-tile'
       .removeClass 'o-tile'

@@ -1,6 +1,20 @@
 {MinimaxAgent} = require 'aye-aye'
-{ConnectFour} = require './connect-four'
+{ConnectFour, openColumns} = require './connect-four'
 Game = ConnectFour
+
+# returns random j such that i ≤ j < n
+random = (i, n) -> Math.floor(Math.random()*(n-i)+i)
+
+# Fisher–Yates
+shuffle = (a) ->
+  n = a.length
+  return a if n is 0
+  for i in [0...n-1]
+    j = random i, n
+    [a[i],a[j]] = [a[j],a[i]]
+  a
+
+ConnectFour::possibleActions = -> shuffle openColumns @a
 
 player = null
 game = null
