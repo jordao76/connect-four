@@ -36,14 +36,16 @@ html(lang='en')
               | human
             ul.dropdown-menu
               li: a.player(data-player-for='x') human
-              li: a.player(data-player-for='x') computer
+              li: a.player(data-player-for='x') starter AI
+              li: a.player(data-player-for='x') smart AI
           | &nbsp;vs&nbsp;
           .btn-group.dropup
             button#btn-player-o.button.btn.dropdown-toggle.btn-danger(data-toggle='dropdown')
-              | computer
+              | smart AI
             ul.dropdown-menu
               li: a.player(data-player-for='o') human
-              li: a.player(data-player-for='o') computer
+              li: a.player(data-player-for='o') starter AI
+              li: a.player(data-player-for='o') smart AI
         #commands.col-xs-3
           #btn-new-game.button.btn.btn-default New game
 

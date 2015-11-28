@@ -70,7 +70,8 @@ $ ->
 
   players =
     human: -> humanPlayer()
-    computer: -> computerPlayer 4
+    'starter AI': -> computerPlayer 3
+    'smart AI': -> computerPlayer 4
 
   createPlayerX = ->
     playerName = ($ '#btn-player-x').text()
