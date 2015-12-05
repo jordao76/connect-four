@@ -1,7 +1,7 @@
 # coffeelint: disable=max_line_length
 {MAX, MIN} = require 'aye-aye'
 
-[_, X, O] = [' ', 'X', 'O']
+[_, X, O] = [0, 1, 2]
 
 # empty board
 empty = [
