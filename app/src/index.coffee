@@ -1,4 +1,4 @@
-# coffeelint: disable=max_line_length
+  # coffeelint: disable=max_line_length
 
 $ = jQuery
 
@@ -47,7 +47,7 @@ $ ->
     columnIndex = action % 7
     hideSpinner()
     index = game.openPosition columnIndex
-    playerText = game.nextPlayer.toLowerCase()
+    playerText = if game.nextPlayer is X then 'x' else 'o'
     ($ "##{index}").addClass playerText + '-tile'
     game = game.play action
     lastAction = action
