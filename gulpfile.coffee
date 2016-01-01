@@ -50,7 +50,7 @@ gulp.task 'html', ['jade'], ->
   gulp.src '.tmp/*.html'
     .pipe $.useref searchPath: 'app'
     .pipe $.if '*.css', $.csso()
-    .pipe $.if '*.html', $.minifyHtml conditionals: true
+    .pipe $.if '*.html', $.htmlmin collapseWhitespace: true
     .pipe gulp.dest 'dist'
 
 gulp.task 'clean',
