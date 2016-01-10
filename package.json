@@ -9,9 +9,9 @@
     "aye-aye": "^0.1.6"
   },
   "devDependencies": {
-    "benchmark": "^1.0.0",
+    "benchmark": "^2.0.0",
     "bower": "^1.6.5",
-    "browserify": "^12.0.1",
+    "browserify": "^13.0.0",
     "chai": "^3.2.0",
     "coffee-script": "^1.10.0",
     "coffeeify": "^2.0.1",
