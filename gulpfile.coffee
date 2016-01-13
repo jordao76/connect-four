@@ -1,5 +1,11 @@
 # coffeelint: disable=max_line_length
 
+srcPath = './app'
+destPath = './dist'
+testPath = './test'
+coffeeGlobs = ['./gulpfile.coffee', "#{srcPath}/**/*.coffee", "#{testPath}/**/*.coffee"]
+perfGlob = "#{testPath}/**/perf*.coffee"
+
 gulp = require 'gulp'
 $ = (require 'gulp-load-plugins')()
 run = require 'run-sequence'
@@ -11,13 +17,13 @@ onError = (error) ->
 # build
 
 gulp.task 'lint', ->
-  gulp.src ['./gulpfile.coffee', './app/src/**/*.coffee']
+  gulp.src coffeeGlobs
     .pipe $.coffeelint()
     .pipe $.coffeelint.reporter()
     .pipe $.coffeelint.reporter 'failOnWarning'
 
 gulp.task 'test', ['lint'], ->
-  gulp.src ['./test/**/*.coffee', '!./test/**/perf*.coffee']
+  gulp.src ["#{testPath}/**/*.coffee", "!#{perfGlob}"]
     .pipe $.mocha()
     .on 'error', onError
 
@@ -27,8 +33,8 @@ gulp.task 'scripts', ['test'], ->
   buffer = require 'vinyl-buffer'
   coffeeify = require 'coffeeify'
 
-  transform = (sourceFile, targetFile) ->
-    browserify entries: ["./app/src/#{sourceFile}"], extensions: ['.coffee'], debug: true
+  transform = (sourceFile, targetFile, targetPath) ->
+    browserify entries: [sourceFile], extensions: ['.coffee'], debug: true
       .transform(coffeeify)
       .bundle()
       .pipe source targetFile
@@ -36,26 +42,26 @@ gulp.task 'scripts', ['test'], ->
       .pipe $.sourcemaps.init loadMaps: true
       .pipe $.uglify()
       .pipe $.sourcemaps.write './'
-      .pipe gulp.dest 'dist/src'
+      .pipe gulp.dest targetPath
 
-  transform 'index.coffee', 'main.min.js'
-  transform 'minimax-worker.coffee', 'minimax-worker.min.js'
+  transform "#{srcPath}/src/index.coffee", 'main.min.js', "#{destPath}/src"
+  transform "#{srcPath}/src/minimax-worker.coffee", 'minimax-worker.min.js', "#{destPath}/src"
 
 gulp.task 'jade', ->
-  gulp.src 'app/*.jade'
+  gulp.src "#{srcPath}/**/*.jade"
     .pipe $.jade pretty: yes
     .pipe gulp.dest '.tmp'
 
 gulp.task 'html', ['jade'], ->
-  gulp.src '.tmp/*.html'
-    .pipe $.useref searchPath: 'app'
+  gulp.src ["#{srcPath}/**/*.html", '.tmp/**/*.html']
+    .pipe $.useref searchPath: srcPath
     .pipe $.if '*.css', $.csso()
     .pipe $.if '*.html', $.htmlmin collapseWhitespace: true
-    .pipe gulp.dest 'dist'
+    .pipe gulp.dest destPath
 
 gulp.task 'clean',
   require 'del'
-    .bind null, ['dist', '.tmp', '.publish']
+    .bind null, [destPath, '.tmp', '.publish']
 
 gulp.task 'build', (done) ->
   run 'clean', ['scripts', 'html'], done
@@ -65,7 +71,7 @@ gulp.task 'default', ['build']
 # performance test
 
 gulp.task 'perf', ['lint'], ->
-  gulp.src ['./test/**/perf*.coffee']
+  gulp.src perfGlob
     .pipe $.mocha()
     .on 'error', onError
 
@@ -76,7 +82,7 @@ gulp.task 'connect', ['build'], ->
   serveStatic = require 'serve-static'
   app = connect()
     .use (require 'connect-livereload') port: 35729
-    .use serveStatic 'dist'
+    .use serveStatic destPath
     .use '/bower_components', serveStatic './bower_components'
 
   require 'http'
@@ -86,11 +92,11 @@ gulp.task 'connect', ['build'], ->
       $.util.log 'Started connect web server on http://localhost:9000'
 
 gulp.task 'watch', ['connect'], ->
-  gulp.watch ['app/**/*.coffee'], ['scripts']
-  gulp.watch ['app/*.jade', 'app/css/**/*.css'], ['html']
+  gulp.watch ["#{srcPath}/**/*.coffee"], ['scripts']
+  gulp.watch ["#{srcPath}/**/*.html", "#{srcPath}/**/*.jade", "#{srcPath}/**/*.css"], ['html']
 
   $.livereload.listen()
-  gulp.watch ['dist/*.html', 'dist/css/**/*.css', 'dist/src/**/*.js']
+  gulp.watch ["#{destPath}/**/*.html", "#{destPath}/**/*.css", "#{destPath}/**/*.js"]
     .on 'change', $.livereload.changed
 
 gulp.task 'serve', ['watch'], ->
@@ -99,7 +105,7 @@ gulp.task 'serve', ['watch'], ->
 # deploy
 
 gulp.task 'cdnize', ['build'], ->
-  gulp.src 'dist/index.html'
+  gulp.src "#{destPath}/index.html"
     .pipe $.cdnizer [
       {
         file: '/bower_components/jquery/dist/jquery.min.js'
@@ -122,8 +128,8 @@ gulp.task 'cdnize', ['build'], ->
         cdn: 'https://cdnjs.cloudflare.com/ajax/libs/spin.js/${ version }/spin.min.js'
       }
     ]
-    .pipe gulp.dest './dist'
+    .pipe gulp.dest destPath
 
 gulp.task 'deploy', ['cdnize'], ->
-  gulp.src 'dist/**/*'
+  gulp.src "#{destPath}/**/*"
     .pipe $.ghPages()
