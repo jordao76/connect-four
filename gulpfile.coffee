@@ -1,10 +1,16 @@
 # coffeelint: disable=max_line_length
 
+# parameters
+
 srcPath = './app'
 destPath = './dist'
 testPath = './test'
+scriptPath = '/src' # within srcPath and destPath, only used with browserify
 coffeeGlobs = ['./gulpfile.coffee', "#{srcPath}/**/*.coffee", "#{testPath}/**/*.coffee"]
 perfGlob = "#{testPath}/**/perf*.coffee"
+scriptTransforms =
+  'index.coffee': 'index.min.js'
+  'minimax-worker.coffee': 'minimax-worker.min.js'
 
 gulp = require 'gulp'
 $ = (require 'gulp-load-plugins')()
@@ -33,19 +39,19 @@ gulp.task 'scripts', ['test'], ->
   buffer = require 'vinyl-buffer'
   coffeeify = require 'coffeeify'
 
-  transform = (sourceFile, targetFile, targetPath) ->
-    browserify entries: [sourceFile], extensions: ['.coffee'], debug: true
-      .transform(coffeeify)
+  transform = (sourceFile, destFile) ->
+    browserify entries: ["#{srcPath}#{scriptPath}/#{sourceFile}"], extensions: ['.coffee'], debug: true
+      .transform coffeeify
       .bundle()
-      .pipe source targetFile
+      .pipe source destFile
       .pipe buffer()
       .pipe $.sourcemaps.init loadMaps: true
       .pipe $.uglify()
       .pipe $.sourcemaps.write './'
-      .pipe gulp.dest targetPath
+      .pipe gulp.dest "#{destPath}#{scriptPath}"
 
-  transform "#{srcPath}/src/index.coffee", 'main.min.js', "#{destPath}/src"
-  transform "#{srcPath}/src/minimax-worker.coffee", 'minimax-worker.min.js', "#{destPath}/src"
+  for sourceFile, destFile of scriptTransforms
+    transform sourceFile, destFile
 
 gulp.task 'jade', ->
   gulp.src "#{srcPath}/**/*.jade"
