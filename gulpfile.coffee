@@ -8,9 +8,7 @@ testPath = './test'
 scriptPath = '/src' # within srcPath and destPath, only used with browserify
 coffeeGlobs = ['./gulpfile.coffee', "#{srcPath}/**/*.coffee", "#{testPath}/**/*.coffee"]
 perfGlob = "#{testPath}/**/perf*.coffee"
-scriptTransforms =
-  'index.coffee': 'index.min.js'
-  'minimax-worker.coffee': 'minimax-worker.min.js'
+transformGlobs = ['./app/src/index.coffee', './app/src/minimax-worker.coffee']
 
 gulp = require 'gulp'
 $ = (require 'gulp-load-plugins')()
@@ -35,23 +33,27 @@ gulp.task 'test', ['lint'], ->
 
 gulp.task 'scripts', ['test'], ->
   browserify = require 'browserify'
+  coffeeify = require 'coffeeify'
   source = require 'vinyl-source-stream'
   buffer = require 'vinyl-buffer'
-  coffeeify = require 'coffeeify'
+  es = require 'event-stream'
+  glob = require 'glob'
+  path = require 'path'
 
-  transform = (sourceFile, destFile) ->
-    browserify entries: ["#{srcPath}#{scriptPath}/#{sourceFile}"], extensions: ['.coffee'], debug: true
+  files = transformGlobs
+    .map (pattern) -> glob.sync pattern
+    .reduce (a, b) -> a.concat b # flatten
+  es.merge files.map (entry) ->
+    browserify entries: [entry], extensions: ['.coffee'], debug: true
       .transform coffeeify
       .bundle()
-      .pipe source destFile
+      .pipe source path.basename entry
       .pipe buffer()
+      .pipe $.rename extname: '.min.js'
       .pipe $.sourcemaps.init loadMaps: true
       .pipe $.uglify()
       .pipe $.sourcemaps.write './'
       .pipe gulp.dest "#{destPath}#{scriptPath}"
-
-  for sourceFile, destFile of scriptTransforms
-    transform sourceFile, destFile
 
 gulp.task 'jade', ->
   gulp.src "#{srcPath}/**/*.jade"
