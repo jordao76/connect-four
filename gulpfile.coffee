@@ -8,7 +8,7 @@ testPath = './test'
 scriptPath = '/src' # within srcPath and destPath, only used with browserify
 coffeeGlobs = ['./gulpfile.coffee', "#{srcPath}/**/*.coffee", "#{testPath}/**/*.coffee"]
 perfGlob = "#{testPath}/**/perf*.coffee"
-transformGlobs = ['./app/src/index.coffee', './app/src/minimax-worker.coffee']
+transformGlobs = ["#{srcPath}#{scriptPath}/index.coffee", "#{srcPath}#{scriptPath}/minimax-worker.coffee"]
 
 gulp = require 'gulp'
 $ = (require 'gulp-load-plugins')()
