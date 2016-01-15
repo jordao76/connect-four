@@ -113,7 +113,7 @@ gulp.task 'serve', ['watch'], ->
 # deploy
 
 gulp.task 'cdnize', ['build'], ->
-  gulp.src "#{destPath}/index.html"
+  gulp.src "#{destPath}/**/*.html"
     .pipe $.cdnizer [
       {
         file: '/bower_components/jquery/dist/jquery.min.js'
