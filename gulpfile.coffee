@@ -1,7 +1,7 @@
 # coffeelint: disable=max_line_length
 
 gulp = require 'gulp'
-webTasks = require './web-tasks'
+webBuildTasks = require 'web-build-tasks'
 
 rootGlobs = ['./app/src/index.coffee', './app/src/minimax-worker.coffee']
 
@@ -28,4 +28,4 @@ cdnEntries = [
   }
 ]
 
-webTasks.define gulp, {rootGlobs, cdnEntries}
+webBuildTasks.define gulp, {rootGlobs, cdnEntries}
