@@ -26,7 +26,7 @@ html(lang='en')
         .c4-row.row
           each column in [0,1,2,3,4,5,6]
             .tile-pane.col-xs-4
-              .tile(id = "#{row*7 + column}")
+              .tile(id = row*7 + column)
 
       .row
         #spinner.col-xs-3
@@ -51,9 +51,9 @@ html(lang='en')
 
       .row
         #credit.col-xs-12
-          | By 
+          | By
           a(href='https://github.com/jordao76') Jordão
-          | . Check it out on 
+          | . Check it out on
           a(href='https://github.com/jordao76/connect-four') GitHub
           | .
 
