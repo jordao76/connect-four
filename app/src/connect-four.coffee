@@ -1,5 +1,5 @@
 # coffeelint: disable=max_line_length
-[MAX, MIN] = ['MAX', 'MIN'] # avoid requiring aye-aye just for these constants
+{MAX, MIN} = require 'aye-aye'
 
 [_, X, O] = [0, 1, 2]
 
@@ -96,6 +96,20 @@ evaluate = (a) ->
     score += scores[x] - scores[o] if x is 0 or o is 0
   score
 
+repr = (a) ->
+  boardStr = ""
+  for row in [0...6]
+    for col in [0...7]
+      piece = a[row * 7 + col]
+      if piece is X
+        boardStr += "X "
+      else if piece is O
+        boardStr += "O "
+      else
+        boardStr += "_ "
+    boardStr += "\n"
+  boardStr
+
 class ConnectFour
   constructor: (@a = empty, @nextPlayer = X, @depth = 0) ->
   isWin: (W) -> isWin @a, W
@@ -110,6 +124,7 @@ class ConnectFour
   play: (columnIndex) ->
     new @constructor (play @a, columnIndex, @nextPlayer), @opponent(), @depth + 1
   opponent: -> if @nextPlayer is X then O else X
+  toString: -> repr @a
 
 module.exports = {
   _, X, O
